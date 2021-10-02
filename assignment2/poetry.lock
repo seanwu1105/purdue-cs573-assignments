@@ -582,6 +582,14 @@ pytz = ">=2017.3"
 test = ["hypothesis (>=3.58)", "pytest (>=6.0)", "pytest-xdist"]
 
 [[package]]
+name = "pandas-stubs"
+version = "1.2.0.17"
+description = "Type annotations for Pandas"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pandocfilters"
 version = "1.5.0"
 description = "Utilities for writing pandoc filters in python"
@@ -966,7 +974,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "c2882384866b558a37bde1d48c15f87118c6783121af551fb141cf6c9fd80b43"
+content-hash = "e6d8e2ceec7b2402c9c6b22367adfc8d4a5ce7f0abe4f933d8af00d45e817df6"
 
 [metadata.files]
 appnope = [
@@ -1350,6 +1358,10 @@ pandas = [
     {file = "pandas-1.3.3-cp39-cp39-win32.whl", hash = "sha256:f7d84f321674c2f0f31887ee6d5755c54ca1ea5e144d6d54b3bbf566dd9ea0cc"},
     {file = "pandas-1.3.3-cp39-cp39-win_amd64.whl", hash = "sha256:e574c2637c9d27f322e911650b36e858c885702c5996eda8a5a60e35e6648cf2"},
     {file = "pandas-1.3.3.tar.gz", hash = "sha256:272c8cb14aa9793eada6b1ebe81994616e647b5892a370c7135efb2924b701df"},
+]
+pandas-stubs = [
+    {file = "pandas-stubs-1.2.0.17.tar.gz", hash = "sha256:125597f4e3f2a0addf2941ec40170527558a3b593bb89e4844a73f84159d8e10"},
+    {file = "pandas_stubs-1.2.0.17-py3-none-any.whl", hash = "sha256:7bf94305b8e41c88052c35bec86885cba96d2163c02b26f25bc0aeef2e6b5d6f"},
 ]
 pandocfilters = [
     {file = "pandocfilters-1.5.0-py2.py3-none-any.whl", hash = "sha256:33aae3f25fd1a026079f5d27bdd52496f0e0803b3469282162bafdcbdf6ef14f"},
