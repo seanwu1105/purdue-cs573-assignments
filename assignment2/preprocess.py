@@ -31,6 +31,8 @@ def main():
     for col in preference_scores_of_partner:
         print_mean(df, col)
 
+    df.to_csv('dating.csv', index=False)
+
 
 def print_encoding(col: str, label: str, encodings: dict[str, dict[str, int]]):
     print(
