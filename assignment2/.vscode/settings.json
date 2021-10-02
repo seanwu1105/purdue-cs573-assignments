@@ -1,15 +1,16 @@
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": {
-      "source.fixAll": true
-    },
-    "python.pythonPath": ".venv/bin/python",
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.linting.pylintUseMinimalCheckers": false,
-    "[python]": {
-      "editor.defaultFormatter": "ms-python.python"
-    }
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "python.pythonPath": ".venv/bin/python",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.pylintUseMinimalCheckers": false,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
   }
+}
