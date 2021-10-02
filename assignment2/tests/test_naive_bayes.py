@@ -1,4 +1,4 @@
-from naive_bayes import __version__
+from naive_bayes_classifier import __version__
 
 
 def test_version():
