@@ -80,12 +80,12 @@ def normalize_preference_scores(series: pd.Series) -> pd.Series:
     return series
 
 
-def categorize_continuous_columns(df: pd.DataFrame, num_category: int):
+def categorize_continuous_columns(df: pd.DataFrame, bin_size: int):
     '''Side effect: `df` is modified in place.'''
 
     for col, col_range in CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE.items():
         full_range_list = df[col].to_list() + list(col_range)
-        binned = pd.cut(full_range_list, num_category, labels=False)
+        binned = pd.cut(full_range_list, bin_size, labels=False)
         removed_max_min = binned[:-len(col_range)]
         df[col] = pd.Series(removed_max_min)
 
@@ -114,11 +114,11 @@ def get_categorical_sample_spaces(df: pd.DataFrame) -> Dict[str, Set[int]]:
     return categorical_sample_space  # type: ignore
 
 
-def get_column_sample_spaces(df: pd.DataFrame) -> Dict[str, Set[int]]:
+def get_column_sample_spaces(df: pd.DataFrame, bin_size: int) -> Dict[str, Set[int]]:
     sample_space = get_categorical_sample_spaces(df)
 
     for col in df.keys():
         if col not in sample_space:
-            sample_space[col] = set(range(0, 5))
+            sample_space[col] = set(range(0, bin_size))
 
     return sample_space

@@ -1,4 +1,4 @@
-from typing import Dict, Generic, Iterable, Optional, Set, TypeVar
+from typing import Dict, Generic, Optional, Set, TypeVar
 
 import pandas as pd
 

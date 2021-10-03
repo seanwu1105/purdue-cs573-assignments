@@ -7,12 +7,12 @@ from naive_bayes_classifier.preprocess import (
 
 def main():
     df: pd.DataFrame = pd.read_csv('dating.csv')
-    num_category = 5
+    bin_size = 5
 
-    categorize_continuous_columns(df, num_category)
+    categorize_continuous_columns(df, bin_size)
 
     for col in CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE:
-        print(f'{col}: {count_bins(df, col, num_category)}')
+        print(f'{col}: {count_bins(df, col, bin_size)}')
 
     df.to_csv('dating-binned.csv', index=False)
 
