@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Dict, Iterable, Set
 
 import numpy as np
 import pandas as pd
@@ -95,3 +95,30 @@ def count_bins(df: pd.DataFrame, col: str, num_category: int) -> np.ndarray:
             .count()
             .reindex(range(num_category), fill_value=0)
             .to_numpy())
+
+
+def get_categorical_sample_spaces(df: pd.DataFrame) -> Dict[str, Set[int]]:
+    categorical_sample_space = {
+        'gender': {0, 1},
+        'race': None,
+        'race_o': None,
+        'samerace': {0, 1},
+        'field': None,
+        'decision': {0, 1}
+    }
+
+    for col, values in categorical_sample_space.items():
+        if values is None:
+            categorical_sample_space[col] = set(df[col].unique())
+
+    return categorical_sample_space  # type: ignore
+
+
+def get_column_sample_spaces(df: pd.DataFrame) -> Dict[str, Set[int]]:
+    sample_space = get_categorical_sample_spaces(df)
+
+    for col in df.keys():
+        if col not in sample_space:
+            sample_space[col] = set(range(0, 5))
+
+    return sample_space
