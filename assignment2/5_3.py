@@ -24,7 +24,11 @@ def main():
         train_accuracies.append(train_acc)
         test_accuracies.append(test_acc)
 
-    plt.plot(fractions, train_accuracies, fractions, test_accuracies)
+    _, ax = plt.subplots()
+    ax.plot(fractions, train_accuracies, label='Training Accuracy')
+    ax.plot(fractions, test_accuracies, label='Testing Accuracy')
+    ax.legend()
+    plt.show()
 
 
 if __name__ == '__main__':
