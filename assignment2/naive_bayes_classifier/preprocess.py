@@ -2,6 +2,9 @@ from typing import Iterable
 
 import pandas as pd
 
+from .definitions import (preference_scores_of_participant,
+                          preference_scores_of_partner)
+
 
 def strip_quotes_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
     '''Side effect: `df` is modified in place.'''
@@ -73,12 +76,3 @@ def normalize_preference_scores(series: pd.Series) -> pd.Series:
     for col in preference_scores_of_partner:
         series[col] = series[col] / total_partner_score
     return series
-
-
-preference_scores_of_participant = ([
-    'attractive_important', 'sincere_important', 'intelligence_important',
-    'funny_important', 'ambition_important', 'shared_interests_important'])
-
-preference_scores_of_partner = ([
-    'pref_o_attractive', 'pref_o_sincere', 'pref_o_intelligence',
-    'pref_o_funny', 'pref_o_ambitious', 'pref_o_shared_interests'])

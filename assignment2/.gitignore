@@ -162,5 +162,7 @@ cython_debug/
 
 ### Project Defined
 
+try.*
 dating.csv
 2_1.png
+2_2_*.png
