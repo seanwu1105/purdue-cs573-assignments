@@ -1,8 +1,10 @@
 from typing import Iterable
 
+import numpy as np
 import pandas as pd
 
-from .definitions import (preference_scores_of_participant,
+from .definitions import (continuous_valued_column_inclusive_range,
+                          preference_scores_of_participant,
                           preference_scores_of_partner)
 
 
@@ -76,3 +78,20 @@ def normalize_preference_scores(series: pd.Series) -> pd.Series:
     for col in preference_scores_of_partner:
         series[col] = series[col] / total_partner_score
     return series
+
+
+def categorize_continuous_columns(df: pd.DataFrame, num_category: int):
+    '''Side effect: `df` is modified in place.'''
+
+    for col, col_range in continuous_valued_column_inclusive_range.items():
+        full_range_list = df[col].to_list() + list(col_range)
+        binned = pd.cut(full_range_list, num_category, labels=False)
+        removed_max_min = binned[:-len(col_range)]
+        df[col] = pd.Series(removed_max_min)
+
+
+def count_bins(df: pd.DataFrame, col: str, num_category: int) -> np.ndarray:
+    return (df.groupby(col)[col]
+            .count()
+            .reindex(range(num_category), fill_value=0)
+            .to_numpy())
