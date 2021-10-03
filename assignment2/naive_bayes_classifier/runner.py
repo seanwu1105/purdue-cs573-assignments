@@ -6,7 +6,7 @@ import pandas as pd
 
 from . import NaiveBayesClassifier
 from .definitions import RANDOM_STATE
-from .preprocess import get_column_sample_spaces
+from .preprocessing import get_column_sample_spaces
 
 TARGET_NAME = 'decision'
 
