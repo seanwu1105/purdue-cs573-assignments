@@ -3,8 +3,8 @@ from typing import Dict
 import pandas as pd
 
 from naive_bayes_classifier.preprocess import (
+    PREFERENCE_SCORES_OF_PARTICIPANT, PREFERENCE_SCORES_OF_PARTNER,
     encode_label_on_cols, lowercase_on_cols, normalize_preference_scores,
-    preference_scores_of_participant, preference_scores_of_partner,
     strip_quotes_on_cols)
 
 
@@ -28,9 +28,9 @@ def preprocess():
     print_encoding('field', 'law', encodings)
 
     df = df.apply(normalize_preference_scores, axis=1)
-    for col in preference_scores_of_participant:
+    for col in PREFERENCE_SCORES_OF_PARTICIPANT:
         print_mean(df, col)
-    for col in preference_scores_of_partner:
+    for col in PREFERENCE_SCORES_OF_PARTNER:
         print_mean(df, col)
 
     df.to_csv('dating.csv', index=False)

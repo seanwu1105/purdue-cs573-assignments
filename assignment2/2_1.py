@@ -13,7 +13,7 @@ def calculate_grouped_means(filename: str) -> Dict[str, List[float]]:
     means: Dict[str, List[float]] = {'male': [], 'female': []}
     gender_encoding = {v: i for i, v in enumerate(sorted({'male', 'female'}))}
 
-    for col in definitions.preference_scores_of_participant:
+    for col in definitions.PREFERENCE_SCORES_OF_PARTICIPANT:
         grouped = df.groupby('gender')[col].mean()
         means['male'].append(grouped[gender_encoding['male']])
         means['female'].append(grouped[gender_encoding['female']])
@@ -23,7 +23,7 @@ def calculate_grouped_means(filename: str) -> Dict[str, List[float]]:
 
 def save_plot(means: Dict[str, List[float]]):
     width = 0.3
-    x = np.arange(len(definitions.preference_scores_of_participant))
+    x = np.arange(len(definitions.PREFERENCE_SCORES_OF_PARTICIPANT))
 
     _, ax = plt.subplots()
 
@@ -33,7 +33,7 @@ def save_plot(means: Dict[str, List[float]]):
     ax.set_ylabel('Scores Mean')
     ax.set_xticks(x)
     ax.set_xticklabels((s.replace('_important', '').replace('_', '\n')
-                        for s in definitions.preference_scores_of_participant))
+                        for s in definitions.PREFERENCE_SCORES_OF_PARTICIPANT))
     ax.legend()
 
     plt.savefig('2_1.png')

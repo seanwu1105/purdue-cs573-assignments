@@ -1,7 +1,7 @@
 import pandas as pd
 
 from naive_bayes_classifier.preprocess import (
-    categorize_continuous_columns, continuous_valued_column_inclusive_range,
+    CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE, categorize_continuous_columns,
     count_bins)
 
 
@@ -11,7 +11,7 @@ def main():
 
     categorize_continuous_columns(df, num_category)
 
-    for col in continuous_valued_column_inclusive_range:
+    for col in CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE:
         print(f'{col}: {count_bins(df, col, num_category)}')
 
     df.to_csv('dating-binned.csv', index=False)

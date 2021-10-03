@@ -3,9 +3,9 @@ from typing import Iterable
 import numpy as np
 import pandas as pd
 
-from .definitions import (continuous_valued_column_inclusive_range,
-                          preference_scores_of_participant,
-                          preference_scores_of_partner)
+from .definitions import (CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE,
+                          PREFERENCE_SCORES_OF_PARTICIPANT,
+                          PREFERENCE_SCORES_OF_PARTNER)
 
 
 def strip_quotes_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
@@ -69,13 +69,13 @@ def encode_label_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> dict[str, dic
 
 def normalize_preference_scores(series: pd.Series) -> pd.Series:
     total_participant_score = sum(series[col]
-                                  for col in preference_scores_of_participant)
-    for col in preference_scores_of_participant:
+                                  for col in PREFERENCE_SCORES_OF_PARTICIPANT)
+    for col in PREFERENCE_SCORES_OF_PARTICIPANT:
         series[col] = series[col] / total_participant_score
 
     total_partner_score = sum(series[col]
-                              for col in preference_scores_of_partner)
-    for col in preference_scores_of_partner:
+                              for col in PREFERENCE_SCORES_OF_PARTNER)
+    for col in PREFERENCE_SCORES_OF_PARTNER:
         series[col] = series[col] / total_partner_score
     return series
 
@@ -83,7 +83,7 @@ def normalize_preference_scores(series: pd.Series) -> pd.Series:
 def categorize_continuous_columns(df: pd.DataFrame, num_category: int):
     '''Side effect: `df` is modified in place.'''
 
-    for col, col_range in continuous_valued_column_inclusive_range.items():
+    for col, col_range in CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE.items():
         full_range_list = df[col].to_list() + list(col_range)
         binned = pd.cut(full_range_list, num_category, labels=False)
         removed_max_min = binned[:-len(col_range)]

@@ -7,7 +7,7 @@ from naive_bayes_classifier import definitions
 def main():
     df: pd.DataFrame = pd.read_csv('dating.csv')
 
-    for col in definitions.rating_of_partner_from_participant:
+    for col in definitions.RATING_OF_PARTNER_FROM_PARTICIPANT:
         rates: pd.Series = df.groupby(col)['decision'].mean()
 
         plt.scatter(rates.index, rates.array)
