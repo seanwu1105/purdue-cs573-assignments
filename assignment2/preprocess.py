@@ -1,3 +1,5 @@
+from typing import Dict
+
 import pandas as pd
 
 from naive_bayes_classifier.preprocess import (
@@ -6,7 +8,7 @@ from naive_bayes_classifier.preprocess import (
     strip_quotes_on_cols)
 
 
-def main():
+def preprocess():
     raw_filename = 'dating-full.csv'
     df = pd.read_csv(raw_filename)
 
@@ -34,7 +36,7 @@ def main():
     df.to_csv('dating.csv', index=False)
 
 
-def print_encoding(col: str, label: str, encodings: dict[str, dict[str, int]]):
+def print_encoding(col: str, label: str, encodings: Dict[str, Dict[str, int]]):
     print(
         f'Value assigned for {label} in column {col}: {encodings[col][label]}.')
 
@@ -44,4 +46,4 @@ def print_mean(df: pd.DataFrame, col: str):
 
 
 if __name__ == '__main__':
-    main()
+    preprocess()
