@@ -14,7 +14,7 @@ def main():
     for col in continuous_valued_column_inclusive_range:
         print(f'{col}: {count_bins(df, col, num_category)}')
 
-    df.to_csv('dating-binned.csv')
+    df.to_csv('dating-binned.csv', index=False)
 
 
 if __name__ == '__main__':

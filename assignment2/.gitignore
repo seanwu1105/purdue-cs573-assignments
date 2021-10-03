@@ -165,5 +165,7 @@ cython_debug/
 try.*
 dating.csv
 dating-binned.csv
+testSet.csv
+trainSet.csv
 2_1.png
 2_2_*.png
