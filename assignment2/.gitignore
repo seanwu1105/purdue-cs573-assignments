@@ -162,10 +162,7 @@ cython_debug/
 
 ### Project Defined
 
-try.*
 dating.csv
 dating-binned.csv
 testSet.csv
 trainingSet.csv
-2_1.png
-2_2_*.png

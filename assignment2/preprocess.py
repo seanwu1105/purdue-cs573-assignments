@@ -1,3 +1,4 @@
+import sys
 from typing import Dict
 
 import pandas as pd
@@ -8,8 +9,8 @@ from naive_bayes_classifier.preprocessing import (
     strip_quotes_on_cols)
 
 
-def preprocess():
-    raw_filename = 'dating-full.csv'
+def preprocess(input_csv, output_csv):
+    raw_filename = input_csv
     df = pd.read_csv(raw_filename)
 
     cols_need_striped = ('race', 'race_o', 'field')
@@ -33,7 +34,7 @@ def preprocess():
     for col in PREFERENCE_SCORES_OF_PARTNER:
         print_mean(df, col)
 
-    df.to_csv('dating.csv', index=False)
+    df.to_csv(output_csv, index=False)
 
 
 def print_encoding(col: str, label: str, encodings: Dict[str, Dict[str, int]]):
@@ -46,4 +47,7 @@ def print_mean(df: pd.DataFrame, col: str):
 
 
 if __name__ == '__main__':
-    preprocess()
+    if len(sys.argv) != 3:
+        print('Usage: python preprocess.py <input_csv> <output_csv>')
+        sys.exit(1)
+    preprocess(sys.argv[1], sys.argv[2])

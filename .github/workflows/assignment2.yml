@@ -79,11 +79,11 @@ jobs:
 
       - name: Run scripts
         run: |
-          poetry run python preprocess.py
-          poetry run python 2_1.py
-          poetry run python 2_2.py
-          poetry run python discretize.py
-          poetry run python split.py
+          poetry run python preprocess.py dating-full.csv dating.csv
+          poetry run python 2_1.py dating.csv
+          poetry run python 2_2.py dating.csv
+          poetry run python discretize.py dating.csv dating-binned.csv
+          poetry run python split.py dating-binned.csv trainingSet.csv testSet.csv
           poetry run python 5_1.py
           poetry run python 5_2.py
           poetry run python 5_3.py

@@ -1,3 +1,4 @@
+import sys
 from typing import Dict, List
 
 import matplotlib.pyplot as plt
@@ -36,11 +37,15 @@ def save_plot(means: Dict[str, List[float]]):
                         for s in definitions.PREFERENCE_SCORES_OF_PARTICIPANT))
     ax.legend()
 
-    plt.savefig('2_1.png')
+    plt.show()
 
 
 def main():
-    means = calculate_grouped_means('dating.csv')
+    if len(sys.argv) != 2:
+        print('Usage: python 2_1.py <input_csv>')
+        sys.exit(1)
+
+    means = calculate_grouped_means(sys.argv[1])
     save_plot(means)
 
 

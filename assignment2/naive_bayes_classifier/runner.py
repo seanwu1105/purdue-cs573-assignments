@@ -1,6 +1,6 @@
 '''Run NBC with predefined dataset.'''
 
-from typing import Any
+from typing import Any, Tuple
 
 import pandas as pd
 
@@ -11,7 +11,7 @@ from .preprocessing import get_column_sample_spaces
 TARGET_NAME = 'decision'
 
 
-def nbc(t_frac: float, bin_size=5):
+def nbc(t_frac: float, bin_size=5) -> Tuple[float, float]:
     df: pd.DataFrame = pd.read_csv('trainingSet.csv')
 
     features_name = tuple(k for k in df.keys() if k != TARGET_NAME)
@@ -30,10 +30,9 @@ def nbc(t_frac: float, bin_size=5):
         target_name=TARGET_NAME,
         target_sample_space=target_sample_space)
 
-    print(f'Training Accuracy: {test(classifier, train_df):.2f}')
-
     test_df = pd.read_csv('testSet.csv')
-    print(f'Testing Accuracy: {test(classifier, test_df):.2f}')
+
+    return (test(classifier, train_df), test(classifier, test_df))
 
 
 def test(classifier: NaiveBayesClassifier[Any], test_df: pd.DataFrame):
