@@ -1,6 +1,10 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll": true
-    }
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "[json, jsonc, markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.proseWrap": "always"
 }
