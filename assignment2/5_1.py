@@ -1,5 +1,3 @@
-from typing import Any
-
 from naive_bayes_classifier.runner import nbc
 
 

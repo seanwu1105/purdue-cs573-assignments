@@ -7,6 +7,7 @@ __version__ = '0.1.0'
 T = TypeVar('T')
 
 
+# pylint: disable=too-few-public-methods
 class NaiveBayesClassifier(Generic[T]):
     def __init__(self,
                  df: pd.DataFrame,

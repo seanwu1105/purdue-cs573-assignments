@@ -2,7 +2,7 @@ from typing import Dict
 
 import pandas as pd
 
-from naive_bayes_classifier.preprocess import (
+from naive_bayes_classifier.preprocessing import (
     PREFERENCE_SCORES_OF_PARTICIPANT, PREFERENCE_SCORES_OF_PARTNER,
     encode_label_on_cols, lowercase_on_cols, normalize_preference_scores,
     strip_quotes_on_cols)

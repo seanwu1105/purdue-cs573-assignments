@@ -1,6 +1,6 @@
 import pandas as pd
 
-from naive_bayes_classifier.preprocess import (
+from naive_bayes_classifier.preprocessing import (
     CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE, categorize_continuous_columns,
     count_bins)
 

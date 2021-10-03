@@ -5,15 +5,15 @@ from naive_bayes_classifier.runner import nbc
 
 
 def main():
-    bin_sizes = (2, 5, 10, 50, 100, 200)
+    fracs = (0.01, 0.1, 0.2, 0.5, 0.6, 0.75, 0.9, 1)
 
-    for bin_size in bin_sizes:
-        print(f"Bin size: {bin_size}")
+    for frac in fracs:
+        print(f"frac: {frac}")
         df = pd.read_csv('dating.csv')
-        categorize_continuous_columns(df, bin_size)
+        categorize_continuous_columns(df, bin_size=5)
         df.to_csv('dating-binned.csv', index=False)
 
-        nbc(1, bin_size)
+        nbc(frac)
 
 
 if __name__ == '__main__':
