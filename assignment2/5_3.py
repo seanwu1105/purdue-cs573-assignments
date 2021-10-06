@@ -1,7 +1,8 @@
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from naive_bayes_classifier.preprocessing import categorize_continuous_columns
+from naive_bayes_classifier.preprocessing import (categorize_continuous_columns,
+                                                  split_train_test_sets)
 from naive_bayes_classifier.runner import nbc
 
 
@@ -12,9 +13,15 @@ def main():
 
     for frac in fractions:
         print(f"frac: {frac}")
+
+        # Bin the continuous columns
         df = pd.read_csv('dating.csv')
         categorize_continuous_columns(df, bin_size=5)
         df.to_csv('dating-binned.csv', index=False)
+
+        # Split data into training and test sets
+        split_train_test_sets('dating-binned.csv',
+                              'trainingSet.csv', 'testSet.csv')
 
         train_acc, test_acc = nbc(frac)
 

@@ -2,15 +2,11 @@ import sys
 
 import pandas as pd
 
-from naive_bayes_classifier.definitions import RANDOM_STATE, SAMPLE_FRAC
+from naive_bayes_classifier.preprocessing import split_train_test_sets
 
 
 def main(input_csv, training_csv, test_csv):
-    df: pd.DataFrame = pd.read_csv(input_csv)
-    test_df = df.sample(frac=SAMPLE_FRAC, random_state=RANDOM_STATE)
-    train_df = df.drop(test_df.index)  # pylint: disable=maybe-no-member
-    test_df.to_csv(test_csv, index=False)
-    train_df.to_csv(training_csv, index=False)
+    split_train_test_sets(input_csv, training_csv, test_csv)
 
 
 if __name__ == '__main__':
