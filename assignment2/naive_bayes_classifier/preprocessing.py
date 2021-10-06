@@ -5,8 +5,8 @@ import pandas as pd
 
 from .definitions import (CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE,
                           PREFERENCE_SCORES_OF_PARTICIPANT,
-                          PREFERENCE_SCORES_OF_PARTNER, SAMPLE_FRAC,
-                          RANDOM_STATE)
+                          PREFERENCE_SCORES_OF_PARTNER, RANDOM_STATE,
+                          SAMPLE_FRAC)
 
 
 def strip_quotes_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
@@ -128,7 +128,7 @@ def get_column_sample_spaces(df: pd.DataFrame, bin_size: int) -> Dict[str, Set[i
 def split_train_test_sets(input_csv, training_csv, test_csv):
     df: pd.DataFrame = pd.read_csv(input_csv)
     test_df = df.sample(frac=SAMPLE_FRAC, random_state=RANDOM_STATE)
-    train_df = df.drop(test_df.index)
+    train_df = df.drop(test_df.index)  # pylint: disable=maybe-no-member
 
     assert isinstance(train_df, pd.DataFrame)
 
