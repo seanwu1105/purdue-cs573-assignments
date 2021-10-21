@@ -7,6 +7,8 @@ import pandas as pd
 RANDOM_STATE = 25
 SAMPLE_FRAC = 0.2
 
+CATEGORICAL_COLS = ('gender', 'race', 'race_o', 'field')
+
 
 def strip_quotes_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
     '''Side effect: `df` is modified in place.'''
@@ -52,7 +54,7 @@ def lowercase_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
     return count
 
 
-def get_label_encoding(df: pd.DataFrame, col: str) -> Dict[str, np.ndarray]:
+def encode_label(df: pd.DataFrame, col: str) -> Dict[str, np.ndarray]:
 
     unique_values = sorted(df[col].unique())
 
@@ -65,6 +67,8 @@ def get_label_encoding(df: pd.DataFrame, col: str) -> Dict[str, np.ndarray]:
         else:
             encoding[val][idx] = 1
 
+    df[col] = df[col].map(encoding)
+
     return encoding
 
 
@@ -76,3 +80,7 @@ def split_train_test_sets(df: pd.DataFrame, training_csv: str, test_csv: str):
 
     test_df.to_csv(test_csv, index=False)
     train_df.to_csv(training_csv, index=False)
+
+
+def convert_to_ndarray(value: str) -> np.ndarray:
+    return np.fromstring(value[1:-1], dtype=int, sep=' ')

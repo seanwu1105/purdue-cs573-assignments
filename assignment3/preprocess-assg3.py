@@ -3,8 +3,9 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 
-from libs.preprocessing import (get_label_encoding, lowercase_on_cols,
-                                split_train_test_sets, strip_quotes_on_cols)
+from libs.preprocessing import (CATEGORICAL_COLS, encode_label,
+                                lowercase_on_cols, split_train_test_sets,
+                                strip_quotes_on_cols)
 
 
 def main():
@@ -18,10 +19,9 @@ def main():
     cols_need_lowercased = ('field',)
     lowercase_on_cols(df, cols_need_lowercased)
 
-    cols_need_encode = ('gender', 'race', 'race_o', 'field')
     encodings = {}
-    for col in cols_need_encode:
-        encodings[col] = get_label_encoding(df, col)
+    for col in CATEGORICAL_COLS:
+        encodings[col] = encode_label(df, col)
 
     print_encoding('gender', 'female', encodings)
     print_encoding('race', 'Black/African American', encodings)
