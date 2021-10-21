@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 from libs.preprocessing import CATEGORICAL_COLS, convert_to_ndarray
