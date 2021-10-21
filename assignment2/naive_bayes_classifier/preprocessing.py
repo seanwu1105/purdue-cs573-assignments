@@ -128,7 +128,7 @@ def get_column_sample_spaces(df: pd.DataFrame, bin_size: int) -> Dict[str, Set[i
 def split_train_test_sets(input_csv: str, training_csv: str, test_csv: str):
     df: pd.DataFrame = pd.read_csv(input_csv)
     test_df = df.sample(frac=SAMPLE_FRAC, random_state=RANDOM_STATE)
-    train_df = df.drop(test_df.index)  # type: ignore
+    train_df = df.drop(test_df.index)  # pylint: disable=maybe-no-member
 
     assert isinstance(train_df, pd.DataFrame)
 
