@@ -75,4 +75,4 @@ jobs:
 
       - name: Run scripts
         run: |
-          poetry run python preprocess.py
+          poetry run python preprocess-assg3.py
