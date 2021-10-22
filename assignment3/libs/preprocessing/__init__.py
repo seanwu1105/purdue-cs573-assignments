@@ -9,6 +9,14 @@ SAMPLE_FRAC = 0.2
 
 CATEGORICAL_COLS = ('gender', 'race', 'race_o', 'field')
 
+PREFERENCE_SCORES_OF_PARTICIPANT = (
+    'attractive_important', 'sincere_important', 'intelligence_important',
+    'funny_important', 'ambition_important', 'shared_interests_important')
+
+PREFERENCE_SCORES_OF_PARTNER = (
+    'pref_o_attractive', 'pref_o_sincere', 'pref_o_intelligence',
+    'pref_o_funny', 'pref_o_ambitious', 'pref_o_shared_interests')
+
 
 def strip_quotes_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
     '''Side effect: `df` is modified in place.'''
@@ -52,6 +60,19 @@ def lowercase_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
         df[col] = df[col].map(lowercase)
 
     return count
+
+
+def normalize_preference_scores(series: pd.Series) -> pd.Series:
+    total_participant_score = sum(series[col]
+                                  for col in PREFERENCE_SCORES_OF_PARTICIPANT)
+    for col in PREFERENCE_SCORES_OF_PARTICIPANT:
+        series[col] = series[col] / total_participant_score
+
+    total_partner_score = sum(series[col]
+                              for col in PREFERENCE_SCORES_OF_PARTNER)
+    for col in PREFERENCE_SCORES_OF_PARTNER:
+        series[col] = series[col] / total_partner_score
+    return series
 
 
 def encode_label(df: pd.DataFrame, col: str) -> Dict[str, List[int]]:

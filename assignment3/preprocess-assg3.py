@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 
 from libs.preprocessing import (CATEGORICAL_COLS, encode_label,
-                                lowercase_on_cols, split_train_test_sets,
-                                strip_quotes_on_cols)
+                                lowercase_on_cols, normalize_preference_scores,
+                                split_train_test_sets, strip_quotes_on_cols)
 
 
 def main():
@@ -18,6 +18,8 @@ def main():
 
     cols_need_lowercased = ('field',)
     lowercase_on_cols(df, cols_need_lowercased)
+
+    df = df.apply(normalize_preference_scores, axis=1)
 
     encodings = {}
     for col in CATEGORICAL_COLS:
