@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Dict, Iterable
+from typing import Dict, Iterable, List
 
 import numpy as np
 import pandas as pd
@@ -54,12 +54,12 @@ def lowercase_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> int:
     return count
 
 
-def encode_label(df: pd.DataFrame, col: str) -> Dict[str, np.ndarray]:
+def encode_label(df: pd.DataFrame, col: str) -> Dict[str, List[int]]:
 
     unique_values = sorted(df[col].unique())
 
-    encoding = defaultdict[str, np.ndarray](lambda: np.zeros(
-        len(unique_values) - 1, dtype=int))
+    encoding = defaultdict[str, List[int]](
+        lambda: [0] * (len(unique_values) - 1))
 
     for idx, val in enumerate(unique_values):
         if idx == len(unique_values) - 1:
@@ -67,7 +67,20 @@ def encode_label(df: pd.DataFrame, col: str) -> Dict[str, np.ndarray]:
         else:
             encoding[val][idx] = 1
 
-    df[col] = df[col].map(encoding)
+    # Create new columns to store encoded vectors
+    # Get names for new created columns
+    names = tuple(f'{col}_{idx}' for idx in range(len(unique_values) - 1))
+
+    col_index = df.columns.get_loc(col)
+
+    # Convert all encodings to 2D array
+    encoded = np.array(df[col].map(encoding).to_list())
+
+    for idx, name in enumerate(names):
+        df.insert(col_index + idx + 1, name, encoded[:, idx])
+
+    # Remove original column
+    df.drop(columns=[col], inplace=True)
 
     return encoding
 
