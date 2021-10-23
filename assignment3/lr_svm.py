@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 import libs.logistic_regression
+import libs.svm
 from libs.preprocessing import CATEGORICAL_COLS, convert_to_ndarray
 
 REQUIRED_ARGC = 4
@@ -25,9 +26,7 @@ def main():
     if model_index == 1:
         lr(training_data, test_data)
     elif model_index == 2:
-        # from libs.lr_svm import SVM
-        # model = SVM()
-        pass
+        svm(training_data, test_data)
     else:
         print('Invalid model index')
         return
@@ -36,23 +35,33 @@ def main():
 def lr(training_set: pd.DataFrame, test_set: pd.DataFrame):
     training_data = training_set.to_numpy(dtype=float)
     features_list = training_data[:, :-1]
-    output_list = training_data[:, -1]
-    model = libs.logistic_regression.train(features_list, output_list,
-                                           l2_regulation=0.01,
+    outputs = training_data[:, -1]
+    model = libs.logistic_regression.train(features_list, outputs,
+                                           l2_regularization=0.01,
                                            initial_weights=np.zeros(
                                                len(training_set.columns)),
-                                           learning_rate=0.01,
+                                           step_size=0.001,
                                            iterations=500, threshold=1e-6)
     training_accuracy = libs.logistic_regression.test(
-        features_list, output_list, model)
+        features_list, outputs, model)
     print(f'Training Accuracy LR: {training_accuracy:.2f}')
 
     test_data = test_set.to_numpy(dtype=float)
     features_list = test_data[:, :-1]
-    output_list = test_data[:, -1]
+    outputs = test_data[:, -1]
     test_accuracy = libs.logistic_regression.test(
-        features_list, output_list, model)
+        features_list, outputs, model)
     print(f'Testing Accuracy LR: {test_accuracy:.2f}')
+
+
+def svm(training_set: pd.DataFrame, test_set: pd.DataFrame):
+    training_data = training_set.to_numpy(dtype=float)
+    features_list = training_data[:, :-1]
+    outputs = training_data[:, -1]
+    model = libs.svm.train(features_list, outputs,
+                           regularization=0.01,
+                           initial_weights=np.zeros(len(training_set.columns)),
+                           learning_rate=0.5, iterations=500, threshold=1e-6)
 
 
 if __name__ == '__main__':

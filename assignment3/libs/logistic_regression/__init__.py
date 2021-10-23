@@ -7,27 +7,29 @@ __version__ = '0.1.0'
 
 # pylint: disable=too-many-arguments
 def train(features_list: np.ndarray, outputs: np.ndarray,
-          l2_regulation: float, initial_weights: np.ndarray,
-          learning_rate: float, iterations: int,
+          l2_regularization: float, initial_weights: np.ndarray,
+          step_size: float, iterations: int,
           threshold: float) -> np.ndarray:
+
     # Insert 1s column to the left of the features matrix to account for the
     # bias (w0).
     features_list = np.insert(features_list, 0, 1, axis=1)
     weights = initial_weights.astype(np.float64)
 
     for _ in range(iterations):
-        gradient = np.dot(
+
+        # Vectorize to calculate gradient decent.
+        gradients = np.dot(
             (-outputs + logistic(np.dot(features_list, weights))), features_list
         ) / len(features_list)
 
-        regularized_gradient = gradient + l2_regulation * weights
+        regularized_gradients = gradients + l2_regularization * weights
 
-        weight_diff = learning_rate * regularized_gradient
-
-        if max(abs(weight_diff)) < threshold:
+        weights_diff = step_size * regularized_gradients
+        if np.max(np.abs(weights_diff)) < threshold:
             break
 
-        weights -= weight_diff
+        weights -= weights_diff
 
     return weights
 
