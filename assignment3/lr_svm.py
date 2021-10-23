@@ -35,34 +35,49 @@ def main():
 def lr(training_set: pd.DataFrame, test_set: pd.DataFrame):
     training_data = training_set.to_numpy(dtype=float)
     features_list = training_data[:, :-1]
-    outputs = training_data[:, -1]
-    model = libs.logistic_regression.train(features_list, outputs,
-                                           l2_regularization=0.01,
+    expects = training_data[:, -1]
+    model = libs.logistic_regression.train(features_list, expects,
                                            initial_weights=np.zeros(
                                                len(training_set.columns)),
-                                           step_size=0.01,
+                                           l2_regularization=0.01,
+                                           learning_rate=0.01,
                                            iterations=500, threshold=1e-6)
     training_accuracy = libs.logistic_regression.test(
-        features_list, outputs, model)
+        features_list, expects, model)
     print(f'Training Accuracy LR: {training_accuracy:.2f}')
 
     test_data = test_set.to_numpy(dtype=float)
     features_list = test_data[:, :-1]
-    outputs = test_data[:, -1]
+    expects = test_data[:, -1]
     test_accuracy = libs.logistic_regression.test(
-        features_list, outputs, model)
+        features_list, expects, model)
     print(f'Testing Accuracy LR: {test_accuracy:.2f}')
 
 
 def svm(training_set: pd.DataFrame, test_set: pd.DataFrame):
     training_data = training_set.to_numpy(dtype=float)
     features_list = training_data[:, :-1]
-    outputs = training_data[:, -1]
-    model = libs.svm.train(features_list, outputs,
-                           regularization=0.01,
+    expects = training_data[:, -1]
+    expects[expects == 0] = -1
+
+    model = libs.svm.train(features_list, expects,
                            initial_weights=np.zeros(len(training_set.columns)),
+                           regularization=0.01,
                            learning_rate=0.5, iterations=500, threshold=1e-6)
+
+    training_accuracy = libs.svm.test(
+        features_list, expects, model)
+    print(f'Training Accuracy SVM: {training_accuracy:.2f}')
+
+    test_data = test_set.to_numpy(dtype=float)
+    features_list = test_data[:, :-1]
+    expects = test_data[:, -1]
+    expects[expects == 0] = -1
+    test_accuracy = libs.svm.test(
+        features_list, expects, model)
+    print(f'Testing Accuracy SVM: {test_accuracy:.2f}')
 
 
 if __name__ == '__main__':
+    np.set_printoptions(suppress=True)
     main()
