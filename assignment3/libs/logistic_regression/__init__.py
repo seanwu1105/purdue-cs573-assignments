@@ -1,6 +1,7 @@
 from typing import Union
 
 import numpy as np
+import numpy.linalg as la
 
 __version__ = '0.1.0'
 
@@ -26,7 +27,7 @@ def train(features_list: np.ndarray, outputs: np.ndarray,
         regularized_gradients = gradients + l2_regularization * weights
 
         weights_diff = step_size * regularized_gradients
-        if np.max(np.abs(weights_diff)) < threshold:
+        if la.norm(weights_diff, 2) < threshold:
             break
 
         weights -= weights_diff

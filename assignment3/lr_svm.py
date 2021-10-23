@@ -40,7 +40,7 @@ def lr(training_set: pd.DataFrame, test_set: pd.DataFrame):
                                            l2_regularization=0.01,
                                            initial_weights=np.zeros(
                                                len(training_set.columns)),
-                                           step_size=0.001,
+                                           step_size=0.01,
                                            iterations=500, threshold=1e-6)
     training_accuracy = libs.logistic_regression.test(
         features_list, outputs, model)
