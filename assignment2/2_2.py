@@ -10,7 +10,7 @@ def main(filename):
     df: pd.DataFrame = pd.read_csv(filename)
 
     ncols = 3
-    fig, axs = plt.subplots(
+    _, axs = plt.subplots(
         len(definitions.RATING_OF_PARTNER_FROM_PARTICIPANT) // ncols,
         ncols,
         figsize=(10, 8),
