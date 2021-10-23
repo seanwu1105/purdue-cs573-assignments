@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import Union
 
 import numpy as np
 
@@ -7,13 +7,13 @@ __version__ = '0.1.0'
 
 # pylint: disable=too-many-arguments
 def train(features_list: np.ndarray, outputs: np.ndarray,
-          l2_regulation: float, initial_weights: List[float],
+          l2_regulation: float, initial_weights: np.ndarray,
           learning_rate: float, iterations: int,
           threshold: float) -> np.ndarray:
     # Insert 1s column to the left of the features matrix to account for the
     # bias (w0).
     features_list = np.insert(features_list, 0, 1, axis=1)
-    weights = np.array(initial_weights, dtype=np.float64)
+    weights = initial_weights.astype(np.float64)
 
     for _ in range(iterations):
         gradient = np.dot(
@@ -44,6 +44,3 @@ def test(features_list: np.ndarray, outputs: np.ndarray, model: np.ndarray) -> f
 
 def logistic(x: np.ndarray) -> Union[float, np.ndarray]:
     return 1 / (1 + np.exp(-x))
-
-
-np.set_printoptions(suppress=True)

@@ -1,5 +1,6 @@
 import sys
 
+import numpy as np
 import pandas as pd
 
 import libs.logistic_regression
@@ -38,8 +39,8 @@ def lr(training_set: pd.DataFrame, test_set: pd.DataFrame):
     output_list = training_data[:, -1]
     model = libs.logistic_regression.train(features_list, output_list,
                                            l2_regulation=0.01,
-                                           initial_weights=[0] *
-                                           len(training_set.columns),
+                                           initial_weights=np.zeros(
+                                               len(training_set.columns)),
                                            learning_rate=0.01,
                                            iterations=500, threshold=1e-6)
     training_accuracy = libs.logistic_regression.test(
