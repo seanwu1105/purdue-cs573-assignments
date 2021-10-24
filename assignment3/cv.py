@@ -2,6 +2,7 @@ from typing import Any, Union
 
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 
 import libs
 import libs.logistic_regression
@@ -33,35 +34,36 @@ def main():
         test_acc = best_model.test(test_set_nbc, expect_col_nbc)
         stats['nbc']['test_acc'].append(test_acc)
         stats['nbc']['std_err'].append(std_err)
-        print(
-            '[Naive Bayesian Classifier]',
-            'Test Accuracy:', test_acc,
-            'CV Average Accuracy:', avg_acc,
-            'Standard Error:', std_err
-        )
+        print('[Naive Bayesian Classifier] Test Accuracy:', test_acc)
+        print('[Naive Bayesian Classifier] CV Average Accuracy:', avg_acc)
+        print('[Naive Bayesian Classifier] CV Standard Error:', std_err)
 
         validation = libs.CrossValidation(training_set, expect_col)
         best_model, avg_acc, std_err = validation.validate(Lr(), t_frac)
         test_acc = best_model.test(test_set, expect_col)
         stats['lr']['test_acc'].append(test_acc)
         stats['lr']['std_err'].append(std_err)
-        print(
-            '[Logistic Regression]',
-            'Test Accuracy:', test_acc,
-            'CV Average Accuracy:', avg_acc,
-            'Standard Error:', std_err
-        )
+        print('[Logistic Regression] Test Accuracy:', test_acc)
+        print('[Logistic Regression] CV Average Accuracy:', avg_acc)
+        print('[Logistic Regression] CV Standard Error:', std_err)
 
         best_model, avg_acc, std_err = validation.validate(Svm(), t_frac)
         test_acc = best_model.test(test_set, expect_col)
         stats['svm']['test_acc'].append(test_acc)
         stats['svm']['std_err'].append(std_err)
-        print(
-            '[SVM]',
-            'Test Accuracy:', test_acc,
-            'CV Average Accuracy:', avg_acc,
-            'Standard Error:', std_err
-        )
+        print('[SVM] Test Accuracy:', test_acc)
+        print('[SVM] CV Average Accuracy:', avg_acc)
+        print('[SVM] CV Standard Error:', std_err)
+
+    _, ax = plt.subplots()
+    ax.errorbar(t_fracs, stats['nbc']['test_acc'],
+                yerr=stats['nbc']['std_err'], label='Naive Bayes Classifier')
+    ax.errorbar(t_fracs, stats['lr']['test_acc'],
+                yerr=stats['lr']['std_err'], label='Logistic Regression')
+    ax.errorbar(t_fracs, stats['svm']['test_acc'],
+                yerr=stats['svm']['std_err'], label='SVM')
+    ax.legend()
+    plt.show()
 
 
 class Nbc(libs.Classifier):  # pylint: disable=too-few-public-methods

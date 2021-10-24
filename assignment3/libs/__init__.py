@@ -17,7 +17,7 @@ class Classifier(abc.ABC):  # pylint: disable=too-few-public-methods
         pass
 
 
-class CrossValidation:
+class CrossValidation:  # pylint: disable=too-few-public-methods
 
     def __init__(self,
                  data: pd.DataFrame,

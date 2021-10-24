@@ -76,3 +76,6 @@ jobs:
       - name: Run scripts
         run: |
           poetry run python preprocess-assg3.py
+          poetry run python lr_svm.py trainingSet.csv testSet.csv 1
+          poetry run python lr_svm.py trainingSet.csv testSet.csv 2
+          poetry run python cv.py
