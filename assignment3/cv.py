@@ -13,20 +13,55 @@ from libs.naive_bayes_classifier.preprocessing import get_column_sample_spaces
 def main():
     training_set_nbc = pd.read_csv('trainingSet_NBC.csv')
     test_set_nbc = pd.read_csv('testSet_NBC.csv')
+    expect_col_nbc = 'decision'
 
     training_set = pd.read_csv('trainingSet.csv')
     test_set = pd.read_csv('testSet.csv')
+    expect_col = -1
 
-    nbc_validation = libs.CrossValidation(training_set_nbc, 'decision')
-    best_nbc = nbc_validation.validate(Nbc(), 1)
-    print(best_nbc.test(test_set_nbc, 'decision'))
+    t_fracs = (0.025, 0.05, 0.075, 0.1, 0.15, 0.2)
+    stats = {
+        'nbc': {'test_acc': [], 'std_err': []},
+        'lr': {'test_acc': [], 'std_err': []},
+        'svm': {'test_acc': [], 'std_err': []}
+    }
 
-    validation = libs.CrossValidation(training_set, -1)
-    best_lr = validation.validate(Lr(), 1)
-    print(best_lr.test(test_set, -1))
+    for t_frac in t_fracs:
+        print('t_frac:', t_frac)
+        nbc_validation = libs.CrossValidation(training_set_nbc, expect_col_nbc)
+        best_model, avg_acc, std_err = nbc_validation.validate(Nbc(), t_frac)
+        test_acc = best_model.test(test_set_nbc, expect_col_nbc)
+        stats['nbc']['test_acc'].append(test_acc)
+        stats['nbc']['std_err'].append(std_err)
+        print(
+            '[Naive Bayesian Classifier]',
+            'Test Accuracy:', test_acc,
+            'CV Average Accuracy:', avg_acc,
+            'Standard Error:', std_err
+        )
 
-    best_svm = validation.validate(Svm(), 1)
-    print(best_svm.test(test_set, -1))
+        validation = libs.CrossValidation(training_set, expect_col)
+        best_model, avg_acc, std_err = validation.validate(Lr(), t_frac)
+        test_acc = best_model.test(test_set, expect_col)
+        stats['lr']['test_acc'].append(test_acc)
+        stats['lr']['std_err'].append(std_err)
+        print(
+            '[Logistic Regression]',
+            'Test Accuracy:', test_acc,
+            'CV Average Accuracy:', avg_acc,
+            'Standard Error:', std_err
+        )
+
+        best_model, avg_acc, std_err = validation.validate(Svm(), t_frac)
+        test_acc = best_model.test(test_set, expect_col)
+        stats['svm']['test_acc'].append(test_acc)
+        stats['svm']['std_err'].append(std_err)
+        print(
+            '[SVM]',
+            'Test Accuracy:', test_acc,
+            'CV Average Accuracy:', avg_acc,
+            'Standard Error:', std_err
+        )
 
 
 class Nbc(libs.Classifier):  # pylint: disable=too-few-public-methods

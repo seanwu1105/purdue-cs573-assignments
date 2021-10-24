@@ -1,5 +1,5 @@
 import abc
-from typing import List, Union
+from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -28,8 +28,9 @@ class CrossValidation:
 
     def validate(self,
                  classifier: Classifier,
-                 t_frac: float, random_state=32) -> Model:
+                 t_frac: float, random_state=32) -> Tuple[Model, float, float]:
         max_accuracy = 0.0
+        accuracies = []
         for i, test_df in enumerate(self.data):
             training_df = pd.concat(
                 (part for j, part in enumerate(self.data) if j != i))
@@ -38,10 +39,13 @@ class CrossValidation:
                 frac=t_frac, random_state=random_state)
             model = classifier.train(training_df, self.expect_col)
             accuracy = model.test(test_df, self.expect_col)
+            accuracies.append(accuracy)
             if accuracy > max_accuracy:
                 max_accuracy = accuracy
                 best_model = model
-        return best_model
+        return (best_model,
+                np.mean(accuracies),
+                np.std(1 - np.array(accuracies)) / np.sqrt(len(accuracies)))
 
 
 def partition(data: pd.DataFrame, random_state: int, k: int) -> List[pd.DataFrame]:
