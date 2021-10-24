@@ -11,7 +11,7 @@ from libs.naive_bayes_classifier import NaiveBayesClassifier
 from libs.naive_bayes_classifier.preprocessing import get_column_sample_spaces
 
 
-def main():
+def main():  # pylint: disable=too-many-locals
     training_set_nbc = pd.read_csv('trainingSet_NBC.csv')
     test_set_nbc = pd.read_csv('testSet_NBC.csv')
     expect_col_nbc = 'decision'
