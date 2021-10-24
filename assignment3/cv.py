@@ -2,7 +2,7 @@ from typing import Any, Union
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt # type: ignore
 
 import libs
 import libs.logistic_regression
