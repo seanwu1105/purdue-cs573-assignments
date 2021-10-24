@@ -11,5 +11,9 @@
   "python.linting.mypyEnabled": true,
   "[python]": {
     "editor.defaultFormatter": "ms-python.python"
-  }
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.proseWrap": "always"
 }

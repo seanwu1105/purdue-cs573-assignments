@@ -11,6 +11,12 @@ environment. Run the following command to setup developing environment.
 poetry install --no-root
 ```
 
+Remember to activate the virtual environment if not automatically loaded.
+
+```sh
+source ./assignment2/.venv/bin/activate
+```
+
 ## Scripts
 
 Note that the following scripts are interdependent. They need to be executed _in
