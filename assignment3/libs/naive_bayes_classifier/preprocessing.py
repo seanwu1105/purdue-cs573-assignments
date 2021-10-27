@@ -5,10 +5,10 @@ import pandas as pd
 from .definitions import CONTINUOUS_VALUED_COLUMN_INCLUSIVE_RANGE
 
 
-def encode_label_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> dict[str, dict[str, int]]:
+def encode_label_on_cols(df: pd.DataFrame, cols: Iterable[str]) -> Dict[str, Dict[str, int]]:
     '''Side effect: `df` is modified in place.'''
 
-    def compile_encoding(series: pd.Series) -> dict:
+    def compile_encoding(series: pd.Series) -> Dict[str, int]:
         return {v: i for i, v in enumerate(sorted(set(series)))}
 
     encodings = {}
