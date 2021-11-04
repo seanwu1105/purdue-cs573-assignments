@@ -162,3 +162,5 @@ cython_debug/
 
 ### Project Defined
 evaluation.html
+trainingSet.csv
+testSet.csv
