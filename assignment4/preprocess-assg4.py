@@ -1,6 +1,6 @@
 import pandas as pd
 
-import lib.preprocessing
+import libs.preprocessing
 
 
 def main():
@@ -14,15 +14,15 @@ def main():
     df.drop(columns=cols_need_to_drop, inplace=True)
 
     # Encoding gender column.
-    lib.preprocessing.encode_label_on_cols(df, ('gender', ))
+    libs.preprocessing.encode_label_on_cols(df, ('gender', ))
 
     # pylint: disable=no-member
-    df = df.apply(lib.preprocessing.normalize_preference_scores, axis=1)
+    df = df.apply(libs.preprocessing.normalize_preference_scores, axis=1)
 
     bin_size = 2
-    lib.preprocessing.categorize_continuous_columns(df, bin_size)
+    libs.preprocessing.categorize_continuous_columns(df, bin_size)
 
-    lib.preprocessing.split_train_test_sets(
+    libs.preprocessing.split_train_test_sets(
         df, 'trainingSet.csv', 'testSet.csv')
 
 
