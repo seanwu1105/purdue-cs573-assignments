@@ -53,3 +53,32 @@ jobs:
 
       - name: Test
         run: poetry run python -m pytest tests/
+
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Set up Poetry
+        uses: abatilo/actions-poetry@v2.1.0
+        with:
+          poetry-version: 1.1.6
+
+      - name: Install dependencies
+        run: poetry install --no-root
+
+      - name: Run scripts
+        run: |
+          poetry run python preprocess-assg4.py
+          poetry run python trees.py trainingSet.csv testSet.csv 1
+          poetry run python trees.py trainingSet.csv testSet.csv 2
+          poetry run python trees.py trainingSet.csv testSet.csv 3
+          poetry run python cv_depth.py
+          poetry run python cv_frac.py
+          poetry run python cv_numtrees.py
