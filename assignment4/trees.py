@@ -24,7 +24,6 @@ def main():
     elif model_index == 2:
         bagging(training_data, test_data)
     elif model_index == 3:
-        pass
         randomForest(training_data, test_data)
     else:
         print('Invalid model index')
