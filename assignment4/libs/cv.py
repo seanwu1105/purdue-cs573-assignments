@@ -11,9 +11,9 @@ class CrossValidation:  # pylint: disable=too-few-public-methods
     def __init__(self,
                  data: pd.DataFrame,
                  expect_col: int = -1,
-                 k=10, random_state=18):
+                 folds=10, random_state=18):
         self.expect_col = expect_col
-        self.data = partition(data, random_state, k)
+        self.data = partition(data, random_state, folds)
 
     def validate(self,
                  classifier: Classifier,
