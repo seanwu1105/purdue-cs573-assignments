@@ -2,6 +2,7 @@ import sys
 
 import pandas as pd
 
+import libs.bagging
 import libs.decision_tree
 
 REQUIRED_ARGC = 4
@@ -20,6 +21,13 @@ def main():
 
     if model_index == 1:
         decisionTree(training_data, test_data)
+    elif model_index == 2:
+        bagging(training_data, test_data)
+    elif model_index == 3:
+        pass
+        # randomForest(training_data, test_data)
+    else:
+        print('Invalid model index')
 
 
 def decisionTree(training_set: pd.DataFrame, test_set: pd.DataFrame):
@@ -36,6 +44,22 @@ def decisionTree(training_set: pd.DataFrame, test_set: pd.DataFrame):
     labels = test_data[:, -1]
     print(
         f'Testing Accuracy DT: {libs.decision_tree.test(data, labels, model):.2f}')
+
+
+def bagging(training_set: pd.DataFrame, test_set: pd.DataFrame):
+    training_data = training_set.to_numpy(dtype=int)
+    data = training_data[:, :-1]
+    labels = training_data[:, -1]
+    model = libs.bagging.train(data, labels, 30,
+                               max_depth=8, min_data_size_in_leaf=50)
+    print(
+        f'Training Accuracy BT: {libs.bagging.test(data, labels, model):.2f}')
+
+    test_data = test_set.to_numpy(dtype=int)
+    data = test_data[:, :-1]
+    labels = test_data[:, -1]
+    print(
+        f'Testing Accuracy BT: {libs.bagging.test(data, labels, model):.2f}')
 
 
 if __name__ == '__main__':

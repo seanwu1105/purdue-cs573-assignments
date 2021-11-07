@@ -36,7 +36,8 @@ class DecisionTreeClassifier:
             return Node(labels[0], None, {})
 
         if (attributes.size == 0 or depth == self.max_depth
-                or self.min_data_size_in_leaf and data.size < self.min_data_size_in_leaf):
+                or (self.min_data_size_in_leaf
+                    and data.shape[0] < self.min_data_size_in_leaf)):
             return Node(np.argmax(np.bincount(labels)), None, {})
 
         best_attribute = choose_best_attribute(data, labels, attributes)
