@@ -2,8 +2,8 @@ import sys
 
 import pandas as pd
 
-import libs.decision_tree
-import libs.random_forest
+from libs.decision_tree import Dt
+from libs.random_forest import Rf
 
 REQUIRED_ARGC = 4
 
@@ -31,52 +31,24 @@ def main():
 
 
 def decisionTree(training_set: pd.DataFrame, test_set: pd.DataFrame):
-    training_data = training_set.to_numpy(dtype=int)
-    data = training_data[:, :-1]
-    labels = training_data[:, -1]
-    model = libs.decision_tree.DecisionTreeClassifier(
-        max_depth=8, min_data_size_in_leaf=50).train(data, labels)
-    print(
-        f'Training Accuracy DT: {libs.decision_tree.test(data, labels, model):.2f}')
-
-    test_data = test_set.to_numpy(dtype=int)
-    data = test_data[:, :-1]
-    labels = test_data[:, -1]
-    print(
-        f'Testing Accuracy DT: {libs.decision_tree.test(data, labels, model):.2f}')
+    dt = Dt()
+    model = dt.train(training_set)
+    print(f'Training Accuracy DT: {model.test(training_set):.2f}')
+    print(f'Testing Accuracy DT: {model.test(test_set):.2f}')
 
 
 def bagging(training_set: pd.DataFrame, test_set: pd.DataFrame):
-    training_data = training_set.to_numpy(dtype=int)
-    data = training_data[:, :-1]
-    labels = training_data[:, -1]
-    model = libs.random_forest.train(data, labels, 30,
-                                     max_depth=8, min_data_size_in_leaf=50)
-    print(
-        f'Training Accuracy BT: {libs.random_forest.test(data, labels, model):.2f}')
-
-    test_data = test_set.to_numpy(dtype=int)
-    data = test_data[:, :-1]
-    labels = test_data[:, -1]
-    print(
-        f'Testing Accuracy BT: {libs.random_forest.test(data, labels, model):.2f}')
+    model = Rf(max_depth=8, min_data_size_in_leaf=50,
+               attributes_downsampling=False).train(training_set)
+    print(f'Training Accuracy BT: {model.test(training_set):.2f}')
+    print(f'Testing Accuracy BT: {model.test(test_set):.2f}')
 
 
 def randomForest(training_set: pd.DataFrame, test_set: pd.DataFrame):
-    training_data = training_set.to_numpy(dtype=int)
-    data = training_data[:, :-1]
-    labels = training_data[:, -1]
-    model = libs.random_forest.train(data, labels, 30,
-                                     max_depth=8, min_data_size_in_leaf=50,
-                                     attributes_downsampling=True)
-    print(
-        f'Training Accuracy RF: {libs.random_forest.test(data, labels, model):.2f}')
-
-    test_data = test_set.to_numpy(dtype=int)
-    data = test_data[:, :-1]
-    labels = test_data[:, -1]
-    print(
-        f'Testing Accuracy RF: {libs.random_forest.test(data, labels, model):.2f}')
+    model = Rf(max_depth=8, min_data_size_in_leaf=50,
+               attributes_downsampling=True).train(training_set)
+    print(f'Training Accuracy RF: {model.test(training_set):.2f}')
+    print(f'Testing Accuracy RF: {model.test(test_set):.2f}')
 
 
 if __name__ == '__main__':

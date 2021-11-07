@@ -2,8 +2,9 @@ from typing import Iterable, Optional
 
 import numpy as np
 import numpy.typing as npt
+import pandas as pd
 
-from . import decision_tree
+from . import cv, decision_tree
 
 
 # pylint: disable=too-many-arguments
@@ -49,3 +50,31 @@ def test(data: npt.NDArray[np.integer], labels: npt.NDArray[np.integer],
             correct += 1
 
     return correct / len(data)
+
+
+class Rf(cv.Classifier):  # pylint: disable=too-few-public-methods
+    class RfModel(cv.Model):  # pylint: disable=too-few-public-methods
+        def __init__(self, model: Iterable[decision_tree.Node]):
+            self.model = model
+
+        def test(self, data: pd.DataFrame, expect_col: int = -1) -> float:
+            np_data = data.to_numpy(dtype=np.int_)
+            X = np_data[:, :expect_col]
+            y = np_data[:, expect_col]
+            return test(X, y, self.model)
+
+    def __init__(self, size: int = 30, max_depth: int = 8,
+                 min_data_size_in_leaf: int = 50,
+                 attributes_downsampling: bool = False):
+        self.size = size
+        self.max_depth = max_depth
+        self.min_data_size_in_leaf = min_data_size_in_leaf
+        self.attributes_downsampling = attributes_downsampling
+
+    def train(self, data: pd.DataFrame, expect_col: int = -1) -> cv.Model:
+        np_data = data.to_numpy(dtype=np.int_)
+        X = np_data[:, :expect_col]
+        y = np_data[:, expect_col]
+        return Rf.RfModel(train(X, y, self.size, self.max_depth,
+                                self.min_data_size_in_leaf,
+                                self.attributes_downsampling))

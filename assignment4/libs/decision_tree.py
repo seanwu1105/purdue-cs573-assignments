@@ -2,6 +2,9 @@ from typing import Optional
 
 import numpy as np
 import numpy.typing as npt
+import pandas as pd
+
+from . import cv
 
 
 # pylint: disable=too-few-public-methods
@@ -120,3 +123,27 @@ def test(data: npt.NDArray[np.integer], labels: npt.NDArray[np.integer],
             correct += 1
 
     return correct / len(data)
+
+
+class Dt(cv.Classifier):  # pylint: disable=too-few-public-methods
+    class DtModel(cv.Model):  # pylint: disable=too-few-public-methods
+        def __init__(self, model: Node):
+            self.model = model
+
+        def test(self, data: pd.DataFrame, expect_col: int = -1) -> float:
+            np_data = data.to_numpy(dtype=np.int_)
+            X = np_data[:, :expect_col]
+            y = np_data[:, expect_col]
+            return test(X, y, self.model)
+
+    def __init__(self, max_depth: int = 8,
+                 min_data_size_in_leaf: int = 50):
+        self.max_depth = max_depth
+        self.min_data_size_in_leaf = min_data_size_in_leaf
+
+    def train(self, data: pd.DataFrame, expect_col: int = -1) -> cv.Model:
+        np_data = data.to_numpy(dtype=np.int_)
+        X = np_data[:, :expect_col]
+        y = np_data[:, expect_col]
+        return Dt.DtModel(DecisionTreeClassifier(
+            self.max_depth, self.min_data_size_in_leaf).train(X, y))
