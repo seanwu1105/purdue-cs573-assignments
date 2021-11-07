@@ -109,9 +109,9 @@ class Lr(libs.Classifier):  # pylint: disable=too-few-public-methods
                  expect_col: Union[str, int]) -> float:
             assert isinstance(expect_col, int)
 
-            training_data = data.to_numpy(dtype=float)
-            features_list = training_data[:, :expect_col]
-            expects = training_data[:, expect_col]
+            np_data = data.to_numpy(dtype=float)
+            features_list = np_data[:, :expect_col]
+            expects = np_data[:, expect_col]
             return libs.logistic_regression.test(features_list,
                                                  expects, self.model)
 
@@ -140,9 +140,9 @@ class Svm(libs.Classifier):  # pylint: disable=too-few-public-methods
                  expect_col: Union[str, int]) -> float:
             assert isinstance(expect_col, int)
 
-            training_data = data.to_numpy(dtype=float)
-            features_list = training_data[:, :expect_col]
-            expects = training_data[:, expect_col]
+            np_data = data.to_numpy(dtype=float)
+            features_list = np_data[:, :expect_col]
+            expects = np_data[:, expect_col]
             expects[expects == 0] = -1
             return libs.svm.test(features_list,
                                  expects, self.model)
