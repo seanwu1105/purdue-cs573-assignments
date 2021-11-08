@@ -80,4 +80,4 @@ jobs:
           poetry run python cv_depth.py
           poetry run python cv_frac.py
           poetry run python cv_numtrees.py
-          poetry run python bonus.py trainingSet.csv testSet
+          poetry run python bonus.py trainingSet.csv testSet.csv
