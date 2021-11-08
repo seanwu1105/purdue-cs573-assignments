@@ -27,8 +27,8 @@ jobs:
 
       - name: Lint
         run: |
-          poetry run python -m pylint libs/ ./*.py
-          poetry run python -m mypy libs/ ./*.py
+          poetry run python -m pylint naive_bayes_classifier/ ./*.py
+          poetry run python -m mypy naive_bayes_classifier/ ./*.py
 
   test:
     runs-on: ubuntu-latest

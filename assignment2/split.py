@@ -1,7 +1,5 @@
 import sys
 
-import pandas as pd
-
 from naive_bayes_classifier.preprocessing import split_train_test_sets
 
 
