@@ -50,7 +50,7 @@ python lr_svm.py trainingSet.csv testSet.csv 1
 ### Classify with linear-SVM
 
 Run the following script to display the training and test accuracies with
-logistic regression.
+linear-SVM.
 
 ```sh
 python lr_svm.py trainingSet.csv testSet.csv 2

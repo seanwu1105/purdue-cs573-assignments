@@ -27,10 +27,8 @@ jobs:
 
       - name: Lint
         run: |
-          poetry run python -m pylint libs/
-          poetry run python -m pylint ./*.py
-          poetry run python -m mypy libs/
-          poetry run python -m mypy ./*.py
+          poetry run python -m pylint libs/ ./*.py
+          poetry run python -m mypy libs/ ./*.py
 
   test:
     runs-on: ubuntu-latest

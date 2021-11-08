@@ -27,10 +27,8 @@ jobs:
 
       - name: Lint
         run: |
-          poetry run python -m pylint libs/
-          poetry run python -m pylint ./*.py
-          poetry run python -m mypy libs/
-          poetry run python -m mypy ./*.py
+          poetry run python -m pylint libs/ ./*.py
+          poetry run python -m mypy libs/ ./*.py
 
   test:
     runs-on: ubuntu-latest
@@ -82,3 +80,4 @@ jobs:
           poetry run python cv_depth.py
           poetry run python cv_frac.py
           poetry run python cv_numtrees.py
+          poetry run python bonus.py trainingSet.csv testSet

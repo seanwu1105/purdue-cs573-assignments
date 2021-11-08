@@ -36,6 +36,7 @@ def sigmoid(x: npt.NDArray[np.floating]):
     return 1 / (1 + np.exp(-x))
 
 
+# pylint: disable=too-many-arguments
 def train(data: npt.NDArray[np.floating], labels: npt.NDArray[np.floating],
           epochs: int, init_learning_rate: float, momentum: float,
           network_shape: tuple[int, ...]):
