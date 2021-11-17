@@ -1,5 +1,3 @@
-import random
-
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -9,10 +7,17 @@ EMBEDDING_FILENAME = 'digits-embedding.csv'
 
 
 def draw_random_image():
-    df = pd.read_csv(RAW_FILENAME, header=None)
-    index = random.randint(0, len(df))
-    image_array = df.iloc[index].to_numpy()[2:].reshape(28, 28)
-    plt.imshow(image_array, cmap='gray')
+    arr = pd.read_csv(RAW_FILENAME, header=None).to_numpy()
+
+    images = arr[:, 2:]
+    labels = arr[:, 1]
+    _, ax = plt.subplots(2, 5)
+    for i in range(10):
+        indices = np.where(labels == i)[0]
+        index = np.random.choice(indices)
+        ax[i // 5, i % 5].imshow(images[index].reshape(28, 28), cmap='gray')
+        ax[i // 5, i % 5].axis('off')
+
     plt.show()
 
 
