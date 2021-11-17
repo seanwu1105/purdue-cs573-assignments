@@ -5,7 +5,7 @@ import numpy.typing as npt
 import scipy.spatial
 import scipy.stats
 
-from .utils import get_cluster
+from .utils import get_clusters
 
 
 def sum_of_within_cluster_squared_distances(centroids: npt.NDArray[np.floating],
@@ -16,7 +16,7 @@ def sum_of_within_cluster_squared_distances(centroids: npt.NDArray[np.floating],
 def get_silhouette_coefficient(centroids: npt.NDArray[np.floating],
                                data: npt.NDArray[np.floating]):
 
-    clusters = get_cluster(centroids, data)
+    clusters = get_clusters(centroids, data)
 
     intra_distance_mean = np.mean(np.fromiter((
         np.mean(scipy.spatial.distance.pdist(data[clusters == i]))
@@ -34,7 +34,7 @@ def get_silhouette_coefficient(centroids: npt.NDArray[np.floating],
 def get_normalized_mutual_information(centroids: npt.NDArray[np.floating],
                                       data: npt.NDArray[np.floating],
                                       labels: npt.NDArray[np.integer]):
-    clusters = get_cluster(centroids, data)
+    clusters = get_clusters(centroids, data)
 
     labels_counter = collections.Counter(labels)
     clusters_counter = collections.Counter(clusters)

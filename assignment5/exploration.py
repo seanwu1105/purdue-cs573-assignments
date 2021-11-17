@@ -13,7 +13,7 @@ def draw_random_image():
     labels = arr[:, 1]
     _, ax = plt.subplots(2, 5)
     for i in range(10):
-        indices = np.where(labels == i)[0]
+        indices = (labels == i).nonzero()[0]
         index = np.random.choice(indices)
         ax[i // 5, i % 5].imshow(images[index].reshape(28, 28), cmap='gray')
         ax[i // 5, i % 5].axis('off')
@@ -25,7 +25,8 @@ def draw_random_embedding():
     data = pd.read_csv(EMBEDDING_FILENAME, header=None).to_numpy()
     indices = np.random.randint(0, len(data), size=1000)
 
-    plt.scatter(data[indices, 2], data[indices, 3], c=data[indices, 1])
+    plt.scatter(data[indices, 2], data[indices, 3],
+                c=data[indices, 1], marker='.')
     plt.show()
 
 
