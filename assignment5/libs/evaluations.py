@@ -18,14 +18,24 @@ def get_silhouette_coefficient(centroids: npt.NDArray[np.floating],
 
     clusters = get_clusters(centroids, data)
 
-    intra_distance_mean = np.mean(np.fromiter((
-        np.mean(scipy.spatial.distance.pdist(data[clusters == i]))
-        for i in range(centroids.shape[0])), dtype=np.float_))
+    total_intra_distance = 0
+    for i in range(centroids.shape[0]):
+        cluster_data = data[clusters == i]
+        if cluster_data.shape[0] <= 1:
+            continue
+        total_intra_distance += np.mean(
+            scipy.spatial.distance.pdist(cluster_data))
+    intra_distance_mean = np.mean(total_intra_distance)
 
-    inter_distance_mean = np.mean(np.fromiter(
-        (np.mean(scipy.spatial.distance.cdist(data[clusters == i],
-                                              data[clusters != i]))
-            for i in range(centroids.shape[0])), dtype=np.float_))
+    total_inter_distance = 0
+    for i in range(centroids.shape[0]):
+        cluster_data = data[clusters == i]
+        other_data = data[clusters != i]
+        if cluster_data.shape[0] == 0 or other_data.shape[0] == 0:
+            continue
+        total_inter_distance += np.mean(
+            scipy.spatial.distance.cdist(cluster_data, other_data))
+    inter_distance_mean = np.mean(total_inter_distance)
 
     return (inter_distance_mean - intra_distance_mean) / \
         max(intra_distance_mean, inter_distance_mean)
@@ -36,23 +46,17 @@ def get_normalized_mutual_information(centroids: npt.NDArray[np.floating],
                                       labels: npt.NDArray[np.integer]):
     clusters = get_clusters(centroids, data)
 
-    labels_counter = collections.Counter(labels)
-    clusters_counter = collections.Counter(clusters)
+    labels_prob = np.bincount(labels).astype(np.float64) / labels.size
+    clusters_prob = np.bincount(clusters) / clusters.size
+
+    labels_entropy = scipy.stats.entropy(labels_prob)
+    clusters_entropy = scipy.stats.entropy(clusters_prob)
+
     pairs_counter = collections.Counter(zip(labels, clusters))
 
-    labels_entropy = scipy.stats.entropy(
-        np.fromiter(labels_counter.values(), dtype=np.int_)
-    )
-    clusters_entropy = scipy.stats.entropy(
-        np.fromiter(clusters_counter.values(), dtype=np.int_)
-    )
+    pairs_prob = {k: v / labels.size for k, v in pairs_counter.items()}
 
-    pairs_against_counter = {k: labels_counter[k[0]] * clusters_counter[k[1]]
-                             for k in pairs_counter.keys()}
-
-    information_gain = scipy.stats.entropy(
-        np.fromiter(pairs_counter.values(), dtype=np.int_),
-        qk=np.fromiter(pairs_against_counter.values(), dtype=np.int_)
-    )
+    information_gain = sum(prob * np.log(prob / (labels_prob[label] * clusters_prob[cluster]))
+                           for (label, cluster), prob in pairs_prob.items())
 
     return information_gain / (labels_entropy + clusters_entropy)

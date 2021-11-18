@@ -27,16 +27,19 @@ def main():
         plot_batch_different_num_of_clusters(dataset_list)
     elif sys.argv[1] == '2':
         scatter_clusters(dataset_list, (16, 4, 8))
+    else:
+        raise ValueError('Invalid argument')
 
 
 def plot_different_num_of_clusters(dataset_list: Iterable[npt.NDArray]):
     numbers_of_clusters = (2, 4, 8, 16, 32)
 
-    _, ax = plt.subplots(1, 2)
-    ax[0].set_xlabel('Number of Clusters')
-    ax[0].set_ylabel('WC SSD')
-    ax[1].set_xlabel('Number of Clusters')
-    ax[1].set_ylabel('SC')
+    fig, axes = plt.subplots(1, 2)
+    fig.set_size_inches(10, 5)
+    axes[0].set_xlabel('Number of Clusters')
+    axes[0].set_ylabel('WC SSD')
+    axes[1].set_xlabel('Number of Clusters')
+    axes[1].set_ylabel('SC')
 
     for idx, dataset in enumerate(dataset_list):
         data = dataset[:, 2:]
@@ -47,11 +50,11 @@ def plot_different_num_of_clusters(dataset_list: Iterable[npt.NDArray]):
             wc_ssd.append(
                 sum_of_within_cluster_squared_distances(centroids, data))
             sc.append(get_silhouette_coefficient(centroids, data))
-        ax[0].plot(numbers_of_clusters, wc_ssd, label=f'Dataset {idx + 1}')
-        ax[1].plot(numbers_of_clusters, sc, label=f'Dataset {idx + 1}')
+        axes[0].plot(numbers_of_clusters, wc_ssd, label=f'Dataset {idx + 1}')
+        axes[1].plot(numbers_of_clusters, sc, label=f'Dataset {idx + 1}')
 
-    ax[0].legend()
-    ax[1].legend()
+    axes[0].legend()
+    axes[1].legend()
     plt.tight_layout()
     plt.show()
 
@@ -61,11 +64,12 @@ def plot_batch_different_num_of_clusters(dataset_list: Iterable[npt.NDArray]):
     numbers_of_clusters = (2, 4, 8, 16, 32)
     seeds = range(10)
 
-    _, ax = plt.subplots(1, 2)
-    ax[0].set_xlabel('Number of Clusters')
-    ax[0].set_ylabel('WC SSD')
-    ax[1].set_xlabel('Number of Clusters')
-    ax[1].set_ylabel('SC')
+    fig, axes = plt.subplots(1, 2)
+    fig.set_size_inches(10, 5)
+    axes[0].set_xlabel('Number of Clusters')
+    axes[0].set_ylabel('WC SSD')
+    axes[1].set_xlabel('Number of Clusters')
+    axes[1].set_ylabel('SC')
 
     for idx, dataset in enumerate(dataset_list):
         data = dataset[:, 2:]
@@ -86,13 +90,13 @@ def plot_batch_different_num_of_clusters(dataset_list: Iterable[npt.NDArray]):
             wc_ssd_deviation.append(np.std(wc_ssd))
             sc_mean.append(np.mean(sc))
             sc_deviation.append(np.std(sc))
-        ax[0].errorbar(numbers_of_clusters, wc_ssd_mean,
-                       yerr=wc_ssd_deviation, label=f'Dataset {idx + 1}')
-        ax[1].errorbar(numbers_of_clusters, sc_mean,
-                       yerr=sc_deviation, label=f'Dataset {idx + 1}')
+        axes[0].errorbar(numbers_of_clusters, wc_ssd_mean,
+                         yerr=wc_ssd_deviation, label=f'Dataset {idx + 1}')
+        axes[1].errorbar(numbers_of_clusters, sc_mean,
+                         yerr=sc_deviation, label=f'Dataset {idx + 1}')
 
-    ax[0].legend()
-    ax[1].legend()
+    axes[0].legend()
+    axes[1].legend()
     plt.tight_layout()
     plt.show()
 
@@ -101,7 +105,7 @@ def scatter_clusters(dataset_list: Iterable[npt.NDArray],
                      numbers_of_cluster: Iterable[int]):
     for idx, (dataset, k) in enumerate(zip(dataset_list, numbers_of_cluster)):
         data = dataset[:, 2:]
-        labels = dataset[:, 1]
+        labels = dataset[:, 1].astype(np.int_)
         centroids = k_means(data, k)
         print(
             f'Dataset {idx + 1} NMI: {get_normalized_mutual_information(centroids, data, labels)}')
