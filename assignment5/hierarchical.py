@@ -60,14 +60,10 @@ def plot_wc_ssd_and_sc_against_different_k(dataset: npt.NDArray,
     number_of_clusters = (2, 4, 8, 16, 32)
     data = dataset[:, 2:]
 
-    fig, axes = plt.subplots(1, 2)
-    fig.set_size_inches(10, 5)
-    axes[0].set_xlabel('Number of Clusters')
-    axes[0].set_ylabel('WC SSD')
-    axes[1].set_xlabel('Number of Clusters')
-    axes[1].set_ylabel('SC')
+    fig, axes = plt.subplots(3, 2)
+    fig.set_size_inches(15, 10)
 
-    for name, linkage in linkages.items():
+    for idx, (name, linkage) in enumerate(linkages.items()):
         wc_ssd = []
         sc = []
         for k in number_of_clusters:
@@ -77,11 +73,15 @@ def plot_wc_ssd_and_sc_against_different_k(dataset: npt.NDArray,
             wc_ssd.append(
                 sum_of_within_cluster_squared_distances(centroids, data))
             sc.append(get_silhouette_coefficient(centroids, data))
-        axes[0].plot(number_of_clusters, wc_ssd, label=name)
-        axes[1].plot(number_of_clusters, sc, label=name)
+        axes[idx][0].plot(number_of_clusters, wc_ssd)
+        axes[idx][0].set_title(name)
+        axes[idx][0].set_xlabel('Number of Cluster')
+        axes[idx][0].set_ylabel('WC SSD')
+        axes[idx][1].plot(number_of_clusters, sc)
+        axes[idx][1].set_title(name)
+        axes[idx][1].set_xlabel('Number of Cluster')
+        axes[idx][1].set_ylabel('SC')
 
-    axes[0].legend()
-    axes[1].legend()
     plt.tight_layout()
     plt.show()
 
@@ -97,10 +97,6 @@ def get_nmi_with_each_k(dataset: npt.NDArray, linkages: dict[str, npt.NDArray],
         centroids = get_centroids(clusters, data)
         print(
             f'{name} NMI: {get_normalized_mutual_information(centroids, data, labels)}')
-        plt.scatter(data[:, 0], data[:, 1],
-                    c=clusters, marker='.')
-        plt.title(f'{name}, k = {k}')
-        plt.show()
 
 
 if __name__ == '__main__':
