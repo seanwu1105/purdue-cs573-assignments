@@ -18,27 +18,32 @@ def get_silhouette_coefficient(centroids: npt.NDArray[np.floating],
 
     clusters = get_clusters(centroids, data)
 
-    total_intra_distance = 0
+    intra_distances = []
     for i in range(centroids.shape[0]):
         cluster_data = data[clusters == i]
         if cluster_data.shape[0] <= 1:
             continue
-        total_intra_distance += np.mean(
-            scipy.spatial.distance.pdist(cluster_data))
-    intra_distance_mean = np.mean(total_intra_distance)
+        intra_distances.append(
+            np.mean(scipy.spatial.distance.pdist(cluster_data)))
 
-    total_inter_distance = 0
+    inter_distances = []
     for i in range(centroids.shape[0]):
         cluster_data = data[clusters == i]
-        other_data = data[clusters != i]
-        if cluster_data.shape[0] == 0 or other_data.shape[0] == 0:
+        if cluster_data.shape[0] == 0:
             continue
-        total_inter_distance += np.mean(
-            scipy.spatial.distance.cdist(cluster_data, other_data))
-    inter_distance_mean = np.mean(total_inter_distance)
+        cluster_distances = []
+        for j in range(centroids.shape[0]):
+            if i == j:
+                continue
+            other_data = data[clusters == j]
+            if other_data.shape[0] == 0:
+                continue
+            cluster_distances.append(np.mean(
+                scipy.spatial.distance.cdist(cluster_data, other_data)))
+        inter_distances.append(min(cluster_distances))
 
-    return (inter_distance_mean - intra_distance_mean) / \
-        max(intra_distance_mean, inter_distance_mean)
+    return max((inter - intra) / max(intra, inter)
+               for intra, inter in zip(intra_distances, inter_distances))
 
 
 def get_normalized_mutual_information(centroids: npt.NDArray[np.floating],
